@@ -2,7 +2,7 @@
 
 This is the modified driver of Loco Positioning deck, for different kind of scheduling between Crazyflie and anchors.
 
-###Note: Is better to update the macro LOCODECK_NR_OF_ANCHORS to the right number of anchors available.
+Note: Is better to update the macro LOCODECK_NR_OF_ANCHORS to the right number of anchors available.
 
 ## Compiling on Ubuntu 16.04 64b
 
