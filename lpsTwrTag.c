@@ -280,71 +280,71 @@ void initiateRanging(dwDevice_t *dev)
     // First check: the boolean variable indicates which scheduling must be used: original scheduling if true, or scheduling with
     // frequency if false. "Count" variable (which is a counter) handle the boolean variable "scheduling".
     if (scheduling){
-		current_anchor ++;
-		count ++;
-		if (count == 50){
-			scheduling=false;
-			count=0;
-		}
-	} else {
-		// Here the vector of distances tag-anchor is copied in the auxiliar vector "aux"...
-		for(int i=0;i<LOCODECK_NR_OF_ANCHORS;i++){
-			aux[i]=options->distance[i];
-		}
-		// ... and "aux" is sorted from the minimum (nearest anchor) to the maximum (farther anchor).
-		qsort(aux,LOCODECK_NR_OF_ANCHORS,sizeof(float),compare);
-		// Finally, from the sorted vector aux is obteined the vector "anch_dist", which is the vector of the index of the anchors,
-		// from the nearest (first of the vector) to the farther (last of the vector).
-		for(int i=0; i<LOCODECK_NR_OF_ANCHORS;i++){
-			for(int j=0; j<LOCODECK_NR_OF_ANCHORS;j++){
-				if(aux[i] == options->distance[j]){anch_dist[i]=j;}
-			}
-		}
-		prec_anchor=current_anchor;
-		// Here the two farther anchors are excluded.
-		if (current_anchor == anch_dist[LOCODECK_NR_OF_ANCHORS-2]){
-			current_anchor ++;
-		}
-		if (current_anchor == anch_dist[LOCODECK_NR_OF_ANCHORS-1]){
-			current_anchor ++;
-		}
-		// This is the frequencies vector, where each element is a parameter modifiable with the cfclient.
-		freq_anchor[0]=2; // Nearest anchor.
-		freq_anchor[1]=4;
-		freq_anchor[2]=6;
-		freq_anchor[3]=8;
-		freq_anchor[4]=10;
-		freq_anchor[5]=12; // Farther anchor.
-		// Here, with the counters "countx", the scheduling with frequancy happens (with the exclusion of two farther anchors).
-		if (count3 == freq_anchor[3]){current_anchor=anch_dist[3];}
-		if (current_anchor == anch_dist[3]){count3=0;}
-		else {count3 ++;}
-		if (count2 == freq_anchor[2]){current_anchor=anch_dist[2];}
-		if (current_anchor == anch_dist[2]){count2=0;}
-		else {count2 ++;}
-		if (count1 == freq_anchor[1]){current_anchor=anch_dist[1];}
-		if (current_anchor == anch_dist[1]){count1=0;}
-		else {count1 ++;}
-		if (count0 == freq_anchor[0]){current_anchor=anch_dist[0];}
-		if (current_anchor == anch_dist[0]){count0=0;}
-		else {count0 ++;}
-		// This is a check: if the new anchor index is the same of the precedent, it will be updated.
-		if (current_anchor == prec_anchor){
-			// If the precedent anchor is the nearest, it will be used the original scheduling for this step...
-			if(prec_anchor == anch_dist[0]){
-				current_anchor ++;
-			} else { // ... otherwise will be selected the nearest anchor.
-				current_anchor=anch_dist[0];
-			}
-		}
-		count ++;
-		// This is the return to the original scheduling, necessary to the movementss of the tag.
-		if (count==500){
-			current_anchor=0;
-			scheduling=true;
-			count=0;
+	current_anchor ++;
+	count ++;
+	if (count == 50){
+		scheduling=false;
+		count=0;
+	}
+    } else {
+	// Here the vector of distances tag-anchor is copied in the auxiliar vector "aux"...
+	for(int i=0;i<LOCODECK_NR_OF_ANCHORS;i++){
+		aux[i]=options->distance[i];
+	}
+	// ... and "aux" is sorted from the minimum (nearest anchor) to the maximum (farther anchor).
+	qsort(aux,LOCODECK_NR_OF_ANCHORS,sizeof(float),compare);
+	// Finally, from the sorted vector aux is obteined the vector "anch_dist", which is the vector of the index of the anchors,
+	// from the nearest (first of the vector) to the farther (last of the vector).
+	for(int i=0; i<LOCODECK_NR_OF_ANCHORS;i++){
+		for(int j=0; j<LOCODECK_NR_OF_ANCHORS;j++){
+			if(aux[i] == options->distance[j]){anch_dist[i]=j;}
 		}
 	}
+	prec_anchor=current_anchor;
+	// Here the two farther anchors are excluded.
+	if (current_anchor == anch_dist[LOCODECK_NR_OF_ANCHORS-2]){
+		current_anchor ++;
+	}
+	if (current_anchor == anch_dist[LOCODECK_NR_OF_ANCHORS-1]){
+		current_anchor ++;
+	}
+	// This is the frequencies vector, where each element is a parameter modifiable with the cfclient.
+	freq_anchor[0]=2; // Nearest anchor.
+	freq_anchor[1]=4;
+	freq_anchor[2]=6;
+	freq_anchor[3]=8;
+	freq_anchor[4]=10;
+	freq_anchor[5]=12; // Farther anchor.
+	// Here, with the counters "countx", the scheduling with frequancy happens (with the exclusion of two farther anchors).
+	if (count3 == freq_anchor[3]){current_anchor=anch_dist[3];}
+	if (current_anchor == anch_dist[3]){count3=0;}
+	else {count3 ++;}
+	if (count2 == freq_anchor[2]){current_anchor=anch_dist[2];}
+	if (current_anchor == anch_dist[2]){count2=0;}
+	else {count2 ++;}
+	if (count1 == freq_anchor[1]){current_anchor=anch_dist[1];}
+	if (current_anchor == anch_dist[1]){count1=0;}
+	else {count1 ++;}
+	if (count0 == freq_anchor[0]){current_anchor=anch_dist[0];}
+	if (current_anchor == anch_dist[0]){count0=0;}
+	else {count0 ++;}
+	// This is a check: if the new anchor index is the same of the precedent, it will be updated.
+	if (current_anchor == prec_anchor){
+		// If the precedent anchor is the nearest, it will be used the original scheduling for this step...
+		if(prec_anchor == anch_dist[0]){
+			current_anchor ++;
+		} else { // ... otherwise will be selected the nearest anchor.
+			current_anchor=anch_dist[0];
+		}
+	}
+	count ++;
+	// This is the return to the original scheduling, necessary to the movementss of the tag.
+	if (count==500){
+		current_anchor=0;
+		scheduling=true;
+		count=0;
+	}
+    }
     //Scheduling 3//
     
     
@@ -357,70 +357,70 @@ void initiateRanging(dwDevice_t *dev)
     // First check: the boolean variable indicates which scheduling must be used: original scheduling if true, or scheduling with
     // frequency if false. "Count" variable (which is a counter) handle the boolean variable "scheduling".
     if (scheduling){
-		current_anchor ++;
-		count ++;
-		if (count == 50){
-			scheduling=false;
-			count=0;
-		}
-	} else {
-		// Here the vector of distances tag-anchor is copied in the auxiliar vector "aux"...
-		for(int i=0;i<LOCODECK_NR_OF_ANCHORS;i++){
-			aux[i]=options->distance[i];
-		}
-		// ... and "aux" is sorted from the minimum (nearest anchor) to the maximum (farther anchor).
-		qsort(aux,LOCODECK_NR_OF_ANCHORS,sizeof(float),compare);
-		// Finally, from the sorted vector aux is obteined the vector "anch_dist", which is the vector of the index of the anchors,
-		// from the nearest (first of the vector) to the farther (last of the vector).
-		for(int i=0; i<LOCODECK_NR_OF_ANCHORS;i++){
-			for(int j=0; j<LOCODECK_NR_OF_ANCHORS;j++){
-				if(aux[i] == options->distance[j]){anch_dist[i]=j;}
-			}
-		}
-		prec_anchor=current_anchor;
-		// This is the frequencies vector, where each element is a parameter modifiable with the cfclient.
-		freq_anchor[0]=2; // Nearest anchor.
-		freq_anchor[1]=4;
-		freq_anchor[2]=6;
-		freq_anchor[3]=8;
-		freq_anchor[4]=10;
-		freq_anchor[5]=12; // Farther anchor.
-		// This is the frequencies vector, where each element is a parameter modifiable with the cfclient.
-		if (count5 == freq_anchor[5]){current_anchor=anch_dist[5];}
-		if (current_anchor == anch_dist[5]){count5=0;}
-		else {count5 ++;}
-		if (count4 == freq_anchor[4]){current_anchor=anch_dist[4];}
-		if (current_anchor == anch_dist[4]){count4=0;}
-		else {count4 ++;}
-		if (count3 == freq_anchor[3]){current_anchor=anch_dist[3];}
-		if (current_anchor == anch_dist[3]){count3=0;}
-		else {count3 ++;}
-		if (count2 == freq_anchor[2]){current_anchor=anch_dist[2];}
-		if (current_anchor == anch_dist[2]){count2=0;}
-		else {count2 ++;}
-		if (count1 == freq_anchor[1]){current_anchor=anch_dist[1];}
-		if (current_anchor == anch_dist[1]){count1=0;}
-		else {count1 ++;}
-		if (count0 == freq_anchor[0]){current_anchor=anch_dist[0];}
-		if (current_anchor == anch_dist[0]){count0=0;}
-		else {count0 ++;}
-		// This is a check: if the new anchor index is the same of the precedent, it will be updated.
-		if (current_anchor == prec_anchor){
-			// If the precedent anchor is the nearest, it will be used the original scheduling for this step...
-			if(prec_anchor == anch_dist[0]){
-				current_anchor ++;
-			} else { // ... otherwise will be selected the nearest anchor.
-				current_anchor=anch_dist[0];
-			}
-		}
-		count ++;
-		// This is the return to the original scheduling, necessary to the movementss of the tag.
-		if (count==500){
-			current_anchor=0;
-			scheduling=true;
-			count=0;
+	current_anchor ++;
+	count ++;
+	if (count == 50){
+		scheduling=false;
+		count=0;
+	}
+    } else {
+	// Here the vector of distances tag-anchor is copied in the auxiliar vector "aux"...
+	for(int i=0;i<LOCODECK_NR_OF_ANCHORS;i++){
+		aux[i]=options->distance[i];
+	}
+	// ... and "aux" is sorted from the minimum (nearest anchor) to the maximum (farther anchor).
+	qsort(aux,LOCODECK_NR_OF_ANCHORS,sizeof(float),compare);
+	// Finally, from the sorted vector aux is obteined the vector "anch_dist", which is the vector of the index of the anchors,
+	// from the nearest (first of the vector) to the farther (last of the vector).
+	for(int i=0; i<LOCODECK_NR_OF_ANCHORS;i++){
+		for(int j=0; j<LOCODECK_NR_OF_ANCHORS;j++){
+			if(aux[i] == options->distance[j]){anch_dist[i]=j;}
 		}
 	}
+	prec_anchor=current_anchor;
+	// This is the frequencies vector, where each element is a parameter modifiable with the cfclient.
+	freq_anchor[0]=2; // Nearest anchor.
+	freq_anchor[1]=4;
+	freq_anchor[2]=6;
+	freq_anchor[3]=8;
+	freq_anchor[4]=10;
+	freq_anchor[5]=12; // Farther anchor.
+	// This is the frequencies vector, where each element is a parameter modifiable with the cfclient.
+	if (count5 == freq_anchor[5]){current_anchor=anch_dist[5];}
+	if (current_anchor == anch_dist[5]){count5=0;}
+	else {count5 ++;}
+	if (count4 == freq_anchor[4]){current_anchor=anch_dist[4];}
+	if (current_anchor == anch_dist[4]){count4=0;}
+	else {count4 ++;}
+	if (count3 == freq_anchor[3]){current_anchor=anch_dist[3];}
+	if (current_anchor == anch_dist[3]){count3=0;}
+	else {count3 ++;}
+	if (count2 == freq_anchor[2]){current_anchor=anch_dist[2];}
+	if (current_anchor == anch_dist[2]){count2=0;}
+	else {count2 ++;}
+	if (count1 == freq_anchor[1]){current_anchor=anch_dist[1];}
+	if (current_anchor == anch_dist[1]){count1=0;}
+	else {count1 ++;}
+	if (count0 == freq_anchor[0]){current_anchor=anch_dist[0];}
+	if (current_anchor == anch_dist[0]){count0=0;}
+	else {count0 ++;}
+	// This is a check: if the new anchor index is the same of the precedent, it will be updated.
+	if (current_anchor == prec_anchor){
+		// If the precedent anchor is the nearest, it will be used the original scheduling for this step...
+		if(prec_anchor == anch_dist[0]){
+			current_anchor ++;
+		} else { // ... otherwise will be selected the nearest anchor.
+			current_anchor=anch_dist[0];
+		}
+	}
+	count ++;
+	// This is the return to the original scheduling, necessary to the movementss of the tag.
+	if (count==500){
+		current_anchor=0;
+		scheduling=true;
+		count=0;
+	}
+    }
     //Scheduling 2//
 
     
@@ -441,38 +441,38 @@ void initiateRanging(dwDevice_t *dev)
     	}
     } else {
     	// Here the vector of distances tag-anchor is copied in the auxiliar vector "aux"...
-		for(int i=0;i<LOCODECK_NR_OF_ANCHORS;i++){
-			aux[i]=options->distance[i];
+	for(int i=0;i<LOCODECK_NR_OF_ANCHORS;i++){
+		aux[i]=options->distance[i];
+	}
+	// ... and "aux" is sorted from the minimum (nearest anchor) to the maximum (farther anchor).
+	qsort(aux,LOCODECK_NR_OF_ANCHORS,sizeof(float),compare);
+	// Finally, from the sorted vector aux is obteined the vector "anch_dist", which is the vector of the index of the anchors,
+	// from the nearest (first of the vector) to the farther (last of the vector).
+	for(int i=0; i<LOCODECK_NR_OF_ANCHORS;i++){
+		for(int j=0; j<LOCODECK_NR_OF_ANCHORS;j++){
+			if(aux[i] == options->distance[j]){anch_dist[i]=j;}
 		}
-		// ... and "aux" is sorted from the minimum (nearest anchor) to the maximum (farther anchor).
-		qsort(aux,LOCODECK_NR_OF_ANCHORS,sizeof(float),compare);
-		// Finally, from the sorted vector aux is obteined the vector "anch_dist", which is the vector of the index of the anchors,
-		// from the nearest (first of the vector) to the farther (last of the vector).
-		for(int i=0; i<LOCODECK_NR_OF_ANCHORS;i++){
-			for(int j=0; j<LOCODECK_NR_OF_ANCHORS;j++){
-				if(aux[i] == options->distance[j]){anch_dist[i]=j;}
-			}
-		}
-		// The anchor index is updated follow the original scheduling.
+	}
+	// The anchor index is updated follow the original scheduling.
+	current_anchor ++;
+	// Here the two farther anchor are excluded.
+	if (current_anchor == anch_dist[LOCODECK_NR_OF_ANCHORS-2]){ // Second farther.
 		current_anchor ++;
-		// Here the two farther anchor are excluded.
-		if (current_anchor == anch_dist[LOCODECK_NR_OF_ANCHORS-2]){ // Second farther.
-			current_anchor ++;
-		}
-		if (current_anchor == anch_dist[LOCODECK_NR_OF_ANCHORS-1]){ // Farther.
-			current_anchor ++;
-		}
-		count ++;
-		// This is the return to the original scheduling, necessary to the movementss of the tag.
-		if (count==300){
-			current_anchor=0;
-			scheduling=true;
-			count=0;
-		}
+	}
+	if (current_anchor == anch_dist[LOCODECK_NR_OF_ANCHORS-1]){ // Farther.
+		current_anchor ++;
+	}
+	count ++;
+	// This is the return to the original scheduling, necessary to the movementss of the tag.
+	if (count==300){
+		current_anchor=0;
+		scheduling=true;
+		count=0;
+	}
     }
-	//Scheduling 1//
-	
-	// From here on, the driver continues originally.
+    //Scheduling 1//
+	 
+    // From here on, the driver continues originally.
 	
     if (current_anchor >= LOCODECK_NR_OF_ANCHORS) {
       current_anchor = 0;
