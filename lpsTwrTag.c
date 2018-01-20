@@ -347,7 +347,7 @@ void initiateRanging(dwDevice_t *dev)
 	}
     //Scheduling 3//
     
-    /*
+    
     //Scheduling 2// 
     // Scheduling with frequency (without exclusion): the scheduling between tag and anchors happens with specific frequencies, this
     // means that the tag will communicate with the nearest anchor more frequently than the others, and similarly the other anchors.
@@ -420,10 +420,10 @@ void initiateRanging(dwDevice_t *dev)
 			scheduling=true;
 			count=0;
 		}
-	}*/
+	}
     //Scheduling 2//
 
-    /*
+    
     //Scheduling 1//
     // Scheduling with exclusion: the scheduling between tag and anchors is the original one, but this scheduling doesn't permit
     // the communication between the tag and the two farther anchors.
@@ -469,7 +469,7 @@ void initiateRanging(dwDevice_t *dev)
 			scheduling=true;
 			count=0;
 		}
-    }*/
+    }
 	//Scheduling 1//
 	
 	// From here on, the driver continues originally.
